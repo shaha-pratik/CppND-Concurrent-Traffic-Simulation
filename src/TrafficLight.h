@@ -22,7 +22,7 @@ template <class T>
 class MessageQueue
 {
 public:
-    void send(T &&val);
+    void send(T &&msg);
     T receive();
 private:
     std::deque<T> _deque;
