@@ -1,5 +1,6 @@
 #include <iostream>
 #include <random>
+#include <future>
 #include "TrafficLight.h"
 
 /* Implementation of class "MessageQueue" */
@@ -75,7 +76,9 @@ void TrafficLight::cycleThroughPhases()
 			_currentPhase = _currentPhase == TrafficLightPhase::red ? TrafficLightPhase::green : TrafficLightPhase::red;
 
 			auto message = _currentPhase;
-            // TODO: Message sending to message queue using move semantics
+            
+            auto sent = std::async(std::launch::async, &MessageQueue<TrafficLightPhase>::send, _msg_queue, std::move(message));
+            sent.wait();
 
 			last_update = std::chrono::system_clock::now();
 
